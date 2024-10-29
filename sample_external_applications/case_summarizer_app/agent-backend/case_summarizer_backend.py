@@ -18,8 +18,13 @@ def summarize_case(args):
         {"role": "system", "content": "You are a helpful and truthful support case summarization assistant. Create a very brief and concise summary of the support case represented by a json formatted file. Include the case number in the title. Include a conclusion at the end indicating the status of the case. Use markdown formatting wherever applicable."},
         {"role": "user", "content": "%s"%case_data},
     ]
-    response = completion(
-        model = os.getenv("AWS_BEDROCK_MODEL"),
-        messages = messages
-    )
-    return (response['choices'][0]['message']['content'])
+    
+    try:
+        response = completion(
+          model = os.getenv("AWS_BEDROCK_MODEL"),
+          messages = messages
+        )
+        return (response['choices'][0]['message']['content'])
+    except Exception as e:
+        print(e)
+        return e
